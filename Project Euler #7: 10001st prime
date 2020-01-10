@@ -1,0 +1,33 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class Solution {
+static PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out));
+static ArrayList<Integer> primeFactor =new ArrayList<>();
+    public static void main(String[] args) {
+        steiveErathones();
+        Scanner in = new Scanner(System.in);
+        int t = in.nextInt();
+        for(int a0 = 0; a0 < t; a0++){
+            int n = in.nextInt();
+           pw.println(primeFactor.get(n-1));
+            }
+            pw.flush();
+        }
+    
+    private static void steiveErathones() {
+        int maxSize = 10000000;
+        BitSet set = new BitSet(maxSize+1);
+        for (long i=2;i<=maxSize;i++)
+            if (!set.get((int)i)) {
+                for (long j = i * i; j <= maxSize; j += i)
+                    set.set((int)j, true);
+                primeFactor.add((int)i);
+            }
+
+
+    }
+}
