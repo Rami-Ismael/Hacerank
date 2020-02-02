@@ -1,0 +1,35 @@
+public class Solution {
+static StringTokenizer st ;
+static   BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+static String line;
+static PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out));
+static int col,TC,row;
+    public static void main(String[] args) throws IOException{
+        /* Enter your code here. Read input from STDIN. Print output to STDOUT. Your class should be named Solution. */
+        TC = Integer.parseInt(br.readLine());
+        int[][] triangle = new int[100][100];
+        while(TC-->0){
+        row= Integer.parseInt(br.readLine());
+        for(int i=0;i<row;i++){
+            st= new StringTokenizer(br.readLine());
+            int j=0;
+            for(int col =0;col<i+1;col++){
+                triangle[i][col] = Integer.parseInt(st.nextToken());
+            }
+        }
+        //dp method
+        for(int i= row-2;i>=0;i--){
+            for(int j=0;j<i+1;j++){
+                int left = triangle[i+1][j];
+                int right = triangle[i+1][j+1];
+         triangle[i][j]=(Math.max(triangle[i][j]+left,triangle[i][j]+right));
+            }
+              //pw.println(Arrays.toString(triangle[i]));
+        }
+      
+        pw.println(triangle[0][0]);
+        }
+        pw.flush();
+    }
+}
+
