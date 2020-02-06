@@ -1,0 +1,49 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class Solution {
+    static PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out));
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static String line;
+     static  int n,k,T,N,Q;
+    static StringTokenizer st;
+    static Scanner in = new Scanner(System.in);
+    static char [] word;
+    static String[] words;
+    public static void main(String[] args) throws IOException {
+    N = Integer.parseInt(br.readLine());
+    words = new String[N];
+    for(int i=0;i<N;i++)
+    words[i] = br.readLine();
+    Arrays.sort(words);
+    Q = Integer.parseInt(br.readLine());
+    for(int i=0;i<Q;i++){
+        int index = binarySearch(words,0,words.length-1,br.readLine());
+        int sum =0;
+        for(int j=0;j<words[index].length();j++)
+        sum+=((int)words[index].charAt(j))-64;
+        pw.println(sum*(index+1));
+    }
+    pw.flush();
+
+    }
+    static int binarySearch(String[] arr,int l,int r, String x){
+        if(r>=l){
+            int mid = (l+r)/2;
+            if(arr[mid].equals(x)){
+                return mid;
+            }else if(arr[mid].compareTo(x)>0){
+                 return binarySearch(arr, l, mid - 1, x); 
+            }
+            else
+            return binarySearch(arr, mid + 1, r, x); 
+        }
+        // We reach here when element is not present 
+        // in array 
+        return -1; 
+
+    }
+}
