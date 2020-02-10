@@ -1,0 +1,44 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class Solution {
+static PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out));
+private static ArrayList<Integer> primeFactor =new ArrayList<>();
+static StringTokenizer st ;
+static   BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+static long N;
+static String line;
+    public static void main(String[] args)  throws IOException{
+           long[] fact = new long[14];
+        fact[1] = 1;
+        fact[2] = 2;
+        for (int i=3;i<=13;i++)
+            fact[i] = fact[i-1]*i;
+        N = Integer.parseInt(br.readLine());
+        while(N-->0){
+        int N = Integer.parseInt(br.readLine());
+        long start = 0;
+        String line = "abcdefghijklm";
+        String answer = "";
+        long size = line.length();
+        while (answer.length()!=size){
+            int distance = 0;
+            long nodeToThePart = fact[line.length()-1];
+            long travel = start+nodeToThePart;
+            while (nodeToThePart!=0&&travel<N){
+                distance++;
+                travel+=nodeToThePart;
+            }
+            start = travel-nodeToThePart;
+            answer+=line.charAt(distance);
+            line=(line.substring(0,distance)+line.substring(distance+1));
+        }
+        pw.println(answer);
+        }
+        pw.flush();
+    }
+}
+
