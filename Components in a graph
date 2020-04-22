@@ -1,0 +1,68 @@
+import java.io.*;
+import java.util.*;
+public class Main {
+    static PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out));
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static String line;
+
+    public static void main(String[] args) throws IOException {
+	// write your code here
+        int N = Integer.parseInt(br.readLine());
+        int [] parent = new int[2*N+1];
+        int [] size = new int[2*N+1];
+        int min =Integer.MAX_VALUE;
+        int max =Integer.MIN_VALUE;
+        HashSet<Integer> set = new HashSet<>();
+        BitSet bits =new BitSet(2*N+1);
+        for (int i=0;i<=2*N;i++){
+            parent[i] = i;
+            size[i]=1;
+            set.add(i);
+        }
+        set.remove(0);
+        for (int i=0;i<N;i++){
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int u = Integer.parseInt(st.nextToken());
+            int v = Integer.parseInt(st.nextToken());
+            bits.set(u,true);
+            bits.set(v,true);
+            u = find_set(u,parent);
+            v= find_set(v,parent);
+
+            if (u!=v) {
+
+                union(u, v, parent, size,set);
+            }
+        }
+        for (int x:set){
+            if (bits.get(x)) {
+               // pw.println(size[x] + " " + x);
+                min = Math.min(size[x], min);
+                max = Math.max(size[x], max);
+            }
+        }
+       // pw.println(Arrays.toString(size));
+        pw.println(min+" "+max);
+        pw.flush();
+    }
+  static   int find_set(int v,int [] par){
+        if (v==par[v])
+            return v;
+        return par[v]=find_set(par[v],par);
+    }
+    static void union(int a, int b, int[] par, int[] size, HashSet<Integer> set){
+        a =find_set(a,par);
+        b = find_set(b,par);
+        if (a!=b){
+            if (size[a]<size[b]){
+                int temp = a;
+                a=b;
+                b = temp;
+            }
+            set.remove(b);
+           par[b]=a;
+           size[a]+=size[b];
+
+        }
+    }
+}
