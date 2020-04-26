@@ -1,0 +1,13 @@
+static int[] solve(int n) {
+        //pascal triangle
+        int C[][]  = new int [n+1][n+1];
+        C[0][0] =1;
+        for(int i=1;i<=n;i++){
+            C[i][0] = C[i][i] =1;
+            for(int k=1;k<n;k++){
+                C[i][k] = (C[i-1][k-1]%1000000000+C[i-1][k]%1000000000)%1000000000;
+            }
+        }
+    return C[n];
+
+    }
