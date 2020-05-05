@@ -1,0 +1,17 @@
+ static int[] solve(int[] a) {
+    int [] ans  = new int[a.length+1];
+    ans[0] = a[0];
+    int k=1;
+    for(int i=0;i<a.length-1;i++){
+        int val = lcm(a[i],a[i+1]);
+        ans[k++] = val;
+    }
+    ans[a.length] = a[a.length-1];
+    return ans;
+    }
+static int gcd (int a, int b) {
+    return b!=0 ? gcd (b, a % b) : a;
+}
+static int lcm(int a, int b) {
+    return a / gcd(a, b) * b;
+}
