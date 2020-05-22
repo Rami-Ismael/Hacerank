@@ -1,0 +1,66 @@
+    public static void main(String args[]) throws IOException {
+        Reader ob = new Reader();
+        PrintWriter p = new PrintWriter(System.out);
+        int T = ob.nextInt();
+        while(T-->0){
+            int n= ob.nextInt(); int m = ob.nextInt(); long clib = ob.nextInt(); int croad = ob.nextInt();
+            ArrayList<ArrayList<Integer>> g = new ArrayList<ArrayList<Integer>>();
+            for(int i=0;i<=n;i++)
+            g.add(new ArrayList<>());
+            for(int i=0;i<m;i++){
+                int u= ob.nextInt(); int v = ob.nextInt();
+                g.get(u).add(v);
+                g.get(v).add(u);
+            }
+            if(croad>=clib){
+                long N = n; 
+                System.out.println(N*clib);
+            }
+            else{
+                int [] parent = new int[n+1];
+                int [] size = new int[n+1];
+                for(int i=0;i<=n;i++){
+            size[i]=1;
+            parent[i] = i;
+            }
+                long ans=0;
+                BitSet visited = new BitSet(n+1);
+                for(int i=1;i<=n;i++){
+                if(!visited.get(i)){
+                    dfs(i, visited, g, i, parent, size);
+                        ans+=((size[i]-1)*croad);
+                        ans+=clib;
+                }
+            }
+                System.out.println(ans);
+            }
+
+        }
+        
+           p.flush();
+p.close();
+    }
+  static   void dfs(int u,BitSet visited,ArrayList<ArrayList<Integer>> g,int a,int [] parent,int [] size){
+        visited.set(u,true);
+        for(int i=0;i<g.get(u).size();i++){
+            int v = g.get(u).get(i);
+            if(!visited.get(v)){
+                union(a, v, parent, size);
+                dfs(v, visited, g, a, parent, size);
+            }
+        }
+        
+    }
+    static int  find(int v,int [] parent){
+        if(v==parent[v])return v;
+        return  parent[v] = find(parent[v], parent);
+    }
+   static  void union(int a, int b,int [] parent,int [] size){
+        a = find(a, parent);
+        b = find(b, parent);
+        if(a!=b){
+            parent[b] = a;
+            size[a]+=size[b];
+        }
+    }
+}
