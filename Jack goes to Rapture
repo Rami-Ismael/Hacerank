@@ -1,0 +1,156 @@
+import java.io.*;
+import java.math.*;
+import java.util.*;
+
+
+
+public class Main {
+
+    static MyScanner ob = new MyScanner();
+    static   PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out));
+    static int N ;
+    static int [] A;
+     static char[][] arr = new char[100][1000];
+     static int [] DSU;
+    public static void main(String args[]) throws IOException {
+    //get the input
+        int N = ob.nextInt();  int E = ob.nextInt();
+        ///create a graph
+        ArrayList<ArrayList<IP>> g = new ArrayList<ArrayList<IP>>(N+1);
+        for(int i=0;i<=N;i++){
+            g.add(new ArrayList<>());
+        }
+        //the edge adn edgelist
+        ArrayList<IThreee> edgeList = new ArrayList<>();
+        for(int i=0;i<E;i++){
+            int u = ob.nextInt(); int v = ob.nextInt(); int w = ob.nextInt();
+            edgeList.add(new IThreee(u,v, w));
+        }
+        //kruskal algorhtim
+        DSU = new int[ N+1];
+        for(int i=0;i<=N;i++){
+            DSU[i] =i;
+        }
+        //sort the list
+        Collections.sort(edgeList);
+        for(int i=0;i<E;i++){
+            int u= edgeList.get(i).u;
+            int  v  = edgeList.get(i).v;
+            int w = edgeList.get(i).w;
+            if(find(u)!=find(v)){
+            union(edgeList.get(i).u, edgeList.get(i).v);
+            g.get(u).add(new IP(v, w));
+            g.get(v).add(new IP(u, w));
+            }
+        }
+        //do a dfs earch
+        if(find(1)!=find(N)){
+            pw.println("NO PATH EXISTS");
+        }else{
+            int [] dis = new int[N+1];
+            Arrays.fill(dis, Integer.MAX_VALUE);
+            dis[1] = 0;
+            dfs(1,1,dis,g);
+            pw.println(dis[N]);
+           
+        }
+        pw.flush();
+
+    }
+    
+    private static void dfs(int at, int parent, int[] dis, ArrayList<ArrayList<IP>> g) {
+        for(int i=0;i<g.get(at).size();i++){
+            int v = g.get(at).get(i).v;
+            if(find(v)==find(at)&&v!=parent){
+                int fareAB = g.get(at).get(i).w;
+                int totalFare = dis[at];
+                if(fareAB-totalFare<0){
+                    dis[v] = Math.min(dis[v],dis[at]);
+                }else{
+                    dis[v] = Math.min(dis[at]+fareAB-totalFare,
+                    dis[v]);
+                }
+                dfs(v, at, dis, g);
+            }
+        }
+    }
+
+    static int find(int u) {
+        if(u==DSU[u]){
+            return u;
+        }
+        return DSU[u] = find(DSU[u]);
+    }
+    static void  union(int a, int b){
+        a = find(a);
+        b = find(b);
+        if(a!=b){
+            DSU[b] = a;
+        }
+    }
+    static class IP implements Comparable<IP>{
+        int v,w;
+        IP(int v, int w){
+            this. v= v;
+            this.w =w ;
+        }
+        public int compareTo(IP ip){
+            return w-ip.w;
+        }
+    }
+    static class IThreee implements Comparable<IThreee>{
+        int v, u,w;
+        IThreee(int v, int u,int w){
+            this.v  = v;
+            this.u =u ;
+            this.w = w;
+        }
+        public int compareTo(IThreee ip){
+            return w-ip.w;
+        }
+    }
+
+
+    public static class MyScanner {
+        BufferedReader br;
+        StringTokenizer st;
+   
+        public MyScanner() {
+           br = new BufferedReader(new InputStreamReader(System.in));
+        }
+   
+        String next() {
+            while (st == null || !st.hasMoreElements()) {
+                try {
+                    st = new StringTokenizer(br.readLine());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return st.nextToken();
+        }
+   
+        int nextInt() {
+            return Integer.parseInt(next());
+        }
+   
+        long nextLong() {
+            return Long.parseLong(next());
+        }
+   
+        double nextDouble() {
+            return Double.parseDouble(next());
+        }
+   
+        String nextLine(){
+            String str = "";
+        try {
+           str = br.readLine();
+        } catch (IOException e) {
+           e.printStackTrace();
+        }
+        return str;
+        }
+  
+     }
+}
