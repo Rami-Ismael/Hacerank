@@ -1,0 +1,49 @@
+int n= in.nextInt();
+        String t = in.next();
+        int max =0;
+        for(int i=0;i<26;i++){
+            for(int j=i+1;j<26;j++){
+                char I = (char)(i+'a');
+                char J = (char)(j+'a');
+                String temp = "";
+                for(int k=0;k<n;k++){
+                    char charat = t.charAt(k);
+                    if(charat==I||charat==J){
+                        temp+=charat;
+                    }
+                }
+                if(isAlternating(temp)){
+                  //  out.println(temp);
+                    max    = Math.max(temp.length(), max);
+                }
+            }
+        }
+        out.println(max);
+        out.flush();
+    }
+    
+    private static boolean isAlternating(String temp) {
+        if(temp.length()==0||temp.length()==1)
+            return false;
+        int first = temp.charAt(0);
+        int second = temp.charAt(1);
+        if(temp.length()==2){
+            if(first==second)
+                return false;
+            else{
+                return true;
+            }    
+        }
+          if(first==second)
+            return false;
+        for(int i=2;i<temp.length();i++){
+            if((i&1)==0){
+                if(first!=temp.charAt(i))
+                    return false;
+            }else if((i&1)==1){
+                if(second!=temp.charAt(i))
+                    return false;
+            }
+        }
+        return true;
+    }
